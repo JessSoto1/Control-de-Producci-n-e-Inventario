@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as XLSX from "xlsx";
 
-function ScannerInventario() {
-  const [tipoInventario, setTipoInventario] = useState("materias"); // materias o productos
+function ScannerInventario({ inventario }) {
+  const [tipoInventario, setTipoInventario] = useState("productos"); // 🔹 Ahora inicia en Producto Terminado
   const [modo, setModo] = useState("entrada");
   const [codigo, setCodigo] = useState("");
   const [inventarioMaterias, setInventarioMaterias] = useState([]);
@@ -56,6 +56,24 @@ function ScannerInventario() {
   useEffect(() => {
     localStorage.setItem("historial", JSON.stringify(historial));
   }, [historial]);
+
+  // 🔄 Sincronizar inventario con datos de productividad
+  useEffect(() => {
+    if (!inventario) return;
+
+    console.log("🔁 Sincronizando inventario desde Productividad:", inventario);
+
+    setInventarioProductos((prevInventario) =>
+      prevInventario.map((item) => {
+        const codigo = String(item["CODIGO DE BARRAS"]).trim();
+        const cantidadProductividad = inventario[codigo] || 0;
+        return {
+          ...item,
+          EXISTENCIA: Number(item.EXISTENCIA || 0) + cantidadProductividad,
+        };
+      })
+    );
+  }, [inventario]);
 
   // Enfocar input al cambiar código, modo o tipo de inventario
   useEffect(() => {
@@ -227,7 +245,15 @@ function ScannerInventario() {
               <td>{item["CODIGO DE BARRAS"]}</td>
               <td>{item.DESCRIPCION}</td>
               <td>{item.EXISTENCIA}</td>
-              <td>{item.COSTO}</td>
+              {/* 🔹 Agregado: Mostrar el signo de pesos si hay valor */}
+              <td>
+                {item.COSTO
+                  ? `$${Number(item.COSTO).toLocaleString("es-MX", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}`
+                  : "$0.00"}
+              </td>
               <td>{item.UBICACIÓN}</td>
             </tr>
           ))}

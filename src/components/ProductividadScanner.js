@@ -16,7 +16,7 @@ const inicialConteo = () => ({
 
 const TARIMAS_POR_TURNO = 30;
 
-function ProductividadScanner() {
+function ProductividadScanner({ onActualizarInventario }) {
   const [codigo, setCodigo] = useState("");
   const [conteo, setConteo] = useState(inicialConteo);
   const [historial, setHistorial] = useState([]);
@@ -63,16 +63,6 @@ function ProductividadScanner() {
       return;
     }
 
-    const codigoDuplicado = historial.some(
-      (registro) => registro.codigo === codigo.trim()
-    );
-    if (codigoDuplicado) {
-      setError("Este código ya fue escaneado.");
-      setCodigo("");
-      inputRef.current.focus();
-      return;
-    }
-
     const lineaAsignada = "Linea " + ultimoDigito;
 
     setConteo((prevConteo) => ({
@@ -85,7 +75,12 @@ function ProductividadScanner() {
       linea: lineaAsignada,
       fecha: new Date().toLocaleString(),
     };
+
     setHistorial((prevHistorial) => [nuevoRegistro, ...prevHistorial]);
+
+    if (onActualizarInventario) {
+      onActualizarInventario(codigo.trim());
+    }
 
     setCodigo("");
     inputRef.current.focus();
@@ -114,7 +109,8 @@ function ProductividadScanner() {
         fontFamily: "Arial, sans-serif",
       }}
     >
-      <h1>📦 Escáner de Tarimas</h1>
+    <div style={{ textAlign: "center", marginBottom: "20px" }}>
+       <h1>📦 Escáner de Tarimas</h1>
 
       <form onSubmit={manejarEscaneo} style={{ marginBottom: 20 }}>
         <input
@@ -214,6 +210,8 @@ function ProductividadScanner() {
       </div>
 
       <h2>📊 Productividad por Línea</h2>
+</div>
+
       <table
         border="1"
         cellPadding="10"
