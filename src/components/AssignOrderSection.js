@@ -4,7 +4,7 @@ function AssignOrderSection({ onAssign }) {
   const [orderNumber, setOrderNumber] = useState("");
   const [selectedLine, setSelectedLine] = useState("");
 
-  // Generamos 11 líneas
+  
   const productionLines = Array.from({ length: 11 }, (_, i) => ({
     id: i + 1,
     name: `Línea ${i + 1}`,
@@ -24,8 +24,8 @@ function AssignOrderSection({ onAssign }) {
   return (
     <div
       style={{
-        border: "3px solid black",   // borde más grueso y negro
-        borderRadius: "12px",        // esquinas ligeramente redondeadas
+        border: "3px solid black",   
+        borderRadius: "12px",       
         padding: "20px",
         marginTop: "20px",
       }}

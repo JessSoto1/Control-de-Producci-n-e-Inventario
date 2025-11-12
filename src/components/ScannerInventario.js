@@ -11,7 +11,7 @@ function ScannerInventario({ inventario }) {
   const [error, setError] = useState("");
   const inputRef = useRef(null);
 
-  // FUNCIONES DE INVENTARIO ACTIVO
+  
   const getInventarioActivo = () =>
     tipoInventario === "materias" ? inventarioMaterias : inventarioProductos;
 
@@ -23,17 +23,16 @@ function ScannerInventario({ inventario }) {
     }
   };
 
-  // Nombre legible para inventario
   const obtenerTituloInventario = () =>
     tipoInventario === "materias" ? "Materias Primas" : "Producto Terminado";
 
-  // Log y título del navegador
+  
   useEffect(() => {
     console.log("📢 Tipo de inventario cambió a:", obtenerTituloInventario());
     document.title = `Inventario - ${obtenerTituloInventario()}`;
   }, [tipoInventario]);
 
-  // Cargar inventarios desde localStorage
+  
   useEffect(() => {
     const materias = localStorage.getItem("inventarioMaterias");
     const productos = localStorage.getItem("inventarioProductos");
@@ -44,7 +43,7 @@ function ScannerInventario({ inventario }) {
     if (historialGuardado) setHistorial(JSON.parse(historialGuardado));
   }, []);
 
-  // Guardar inventarios y historial en localStorage
+  
   useEffect(() => {
     localStorage.setItem("inventarioMaterias", JSON.stringify(inventarioMaterias));
   }, [inventarioMaterias]);
@@ -57,7 +56,7 @@ function ScannerInventario({ inventario }) {
     localStorage.setItem("historial", JSON.stringify(historial));
   }, [historial]);
 
-  // 🔄 Sincronizar inventario con datos de productividad
+  
   useEffect(() => {
     if (!inventario) return;
 
@@ -75,12 +74,12 @@ function ScannerInventario({ inventario }) {
     );
   }, [inventario]);
 
-  // Enfocar input al cambiar código, modo o tipo de inventario
+
   useEffect(() => {
     inputRef.current?.focus();
   }, [codigo, modo, tipoInventario]);
 
-  // Leer archivo Excel y cargar datos
+  
   const manejarArchivo = (e) => {
     const archivo = e.target.files[0];
     const reader = new FileReader();
@@ -100,7 +99,7 @@ function ScannerInventario({ inventario }) {
     reader.readAsArrayBuffer(archivo);
   };
 
-  // Escanear y actualizar inventario
+ 
   const manejarEscaneo = (e) => {
     e.preventDefault();
     if (!codigo.trim()) return;
@@ -141,7 +140,6 @@ function ScannerInventario({ inventario }) {
     inputRef.current?.focus();
   };
 
-  // Reiniciar inventario actual
   const reiniciarInventario = () => {
     if (window.confirm("¿Seguro que quieres borrar este inventario?")) {
       setInventarioActivo([]);
@@ -157,7 +155,6 @@ function ScannerInventario({ inventario }) {
     <div style={{ padding: 20, fontFamily: "Arial" }}>
       <h1>📦 Sistema de Inventario</h1>
 
-      {/* Selector tipo de inventario */}
       <div style={{ marginBottom: 10 }}>
         <label><strong>Tipo de Inventario:</strong></label>
         <select
@@ -173,7 +170,7 @@ function ScannerInventario({ inventario }) {
         </select>
       </div>
 
-      {/* Selector modo */}
+      
       <div style={{ marginBottom: 20 }}>
         <label><strong>Modo de operación:</strong></label>
         <select
@@ -186,7 +183,7 @@ function ScannerInventario({ inventario }) {
         </select>
       </div>
 
-      {/* Input escaneo */}
+      
       <form onSubmit={manejarEscaneo} style={{ marginBottom: 20 }}>
         <input
           type="text"
@@ -217,12 +214,12 @@ function ScannerInventario({ inventario }) {
 
       {error && <div style={{ color: "red", marginBottom: 20 }}>{error}</div>}
 
-      {/* Título Inventario Actual */}
+     
       <h2 style={{ fontSize: 28, marginBottom: 20 }}>
         📋 Inventario Actual: <span style={{ color: "#007BFF" }}>{obtenerTituloInventario()}</span>
       </h2>
 
-      {/* Tabla inventario */}
+      
       <table
         border="1"
         cellPadding="8"
@@ -245,7 +242,7 @@ function ScannerInventario({ inventario }) {
               <td>{item["CODIGO DE BARRAS"]}</td>
               <td>{item.DESCRIPCION}</td>
               <td>{item.EXISTENCIA}</td>
-              {/* 🔹 Agregado: Mostrar el signo de pesos si hay valor */}
+              
               <td>
                 {item.COSTO
                   ? `$${Number(item.COSTO).toLocaleString("es-MX", {
@@ -260,7 +257,7 @@ function ScannerInventario({ inventario }) {
         </tbody>
       </table>
 
-      {/* Historial */}
+    
       <h2>📜 Historial de Movimientos</h2>
       <table
         border="1"
@@ -291,7 +288,7 @@ function ScannerInventario({ inventario }) {
         </tbody>
       </table>
 
-      {/* Botón reiniciar */}
+    
       <button
         onClick={reiniciarInventario}
         style={{

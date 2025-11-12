@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AssignOrderSection from "./AssignOrderSection";
 
-// Colores por estado
+
 const statusColors = {
   "Por hacer": "#d3d3d3",
   "En proceso": "#f9d342",
@@ -10,11 +10,11 @@ const statusColors = {
 
 function AssignOrderPage() {
   const [orders, setOrders] = useState([]);
-  const [editingOrder, setEditingOrder] = useState(null); // número de orden que se está editando
+  const [editingOrder, setEditingOrder] = useState(null); 
   const [editLine, setEditLine] = useState("");
   const [editNumber, setEditNumber] = useState("");
 
-  // Asignar línea a una orden
+ 
   const handleAssign = (orderNum, lineId) => {
     setOrders((prevOrders) => {
       const existing = prevOrders.find((o) => o.number === orderNum);
@@ -28,7 +28,7 @@ function AssignOrderPage() {
     });
   };
 
-  // Cambiar estado de la orden
+  
   const handleStatusChange = (orderNum, newStatus) => {
     setOrders((prevOrders) =>
       prevOrders.map((o) =>
@@ -37,19 +37,19 @@ function AssignOrderPage() {
     );
   };
 
-  // Eliminar orden
+  
   const handleDelete = (orderNum) => {
     setOrders((prevOrders) => prevOrders.filter((o) => o.number !== orderNum));
   };
 
-  // Iniciar edición
+  
   const handleEdit = (order) => {
     setEditingOrder(order.number);
     setEditNumber(order.number);
     setEditLine(order.line || "");
   };
 
-  // Guardar edición
+  
   const handleSaveEdit = () => {
     setOrders((prevOrders) =>
       prevOrders.map((o) =>
@@ -63,17 +63,17 @@ function AssignOrderPage() {
     setEditNumber("");
   };
 
-  // Cancelar edición
+  
   const handleCancelEdit = () => {
     setEditingOrder(null);
     setEditLine("");
     setEditNumber("");
   };
 
-  // Generamos 11 líneas
+  
   const productionLines = Array.from({ length: 11 }, (_, i) => i + 1);
 
-  // Guardar cambios (simula backend)
+  
   const handleSaveChanges = () => {
     console.log("Guardando cambios...", orders);
     alert("Cambios guardados correctamente!");
