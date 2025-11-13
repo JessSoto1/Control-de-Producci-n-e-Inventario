@@ -10,7 +10,7 @@ const statusColors = {
 
 function AssignOrderPage() {
   const [orders, setOrders] = useState([]);
-  const [editingOrder, setEditingOrder] = useState(null); 
+  const [editingOrder, setEditingOrder] = useState(null);
   const [editLine, setEditLine] = useState("");
   const [editNumber, setEditNumber] = useState("");
 
